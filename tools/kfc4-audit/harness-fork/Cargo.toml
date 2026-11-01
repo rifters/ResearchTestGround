@@ -1,0 +1,11 @@
+[package]
+name = "kfc4-audit-harness"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kfc-base = { path = "/home/hatch/workspace/repos/m182-fork/eml-fork/crates/kfc-base" }
+serde_json = "1"
+
+[profile.release]
+debug = false
