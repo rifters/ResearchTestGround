@@ -130,6 +130,22 @@ byte-verified on the real container · **INFERRED** = code reading ·
   the 101,459 contents entries: the containers partition the
   contents set.
 
+## In-place writer (patches 0004+0005, Nov 1, 2026 — PROVEN locally)
+
+- Stored sizes are written truncated to 24 bits (`size & 0xFFFFFF`)
+  at the single serialization point; a zero-change round-trip never
+  exposed this because the directory carries the loaded stored value
+  verbatim — only a rewrite-from-data did.
+- In-place mode (`KFCWriteOptions::in_place`, opt-in): chunk zstd
+  levels are detectable from the reference file itself by
+  re-encode-and-compare (66/66 detected on 1273043, matching A2.5),
+  and frames sit in **4096-byte slots** — a re-encoded frame that
+  still fits its original slot keeps it, so a same-size in-place
+  edit changes exactly 2 bytes in the `.kfc` (aggregate + one chunk
+  record's compressed_size) and confines stream diffs to the edited
+  chunk's frame. Overflow and new resources append at the reference
+  stream's end.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to

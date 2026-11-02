@@ -50,6 +50,10 @@ stamped to that build unless a file says otherwise.
   game files' byte budgets close exactly. Remaining gap: `.dat`
   payloads (PC-side).
 - `tools/kfc4-extract-full/` — the A2.5 extractor.
+- `kfc4/inplace-writer.md` — patches 0004 (in-place writer mode) and
+  0005 (24-bit stored-size truncation): a same-size edit now changes
+  exactly 2 bytes in the `.kfc`; ported to the fork as PR #6
+  (stacked on PR #5).
 - `tools/kfc4-audit/` — the Rust audit harness (upstream + fork builds)
   used to produce the audit numbers.
 - `tools/kfc4-writer-fixes/` — the three patches against upstream
