@@ -208,6 +208,24 @@ byte-verified on the real container · **INFERRED** = code reading ·
   dialect itself and a game-side count consumer; the staged
   canonical 82/99 pairs are the decisive test.
 
+## True pristine base + regenerated pairs (Nov 1, 2026)
+
+- Steam-fresh pair secured (Eric deleted + Verified): 91,812
+  resources, contents 101,459 (identical to the modded file —
+  the census stands), 58 chunks, one 24-bit correction. His old
+  live file carried 89 extra resources and 4,279 modified ones.
+- G0 finding: on a *shipped* file the five-fix writer is
+  semantically lossless but not byte-identical in the `.kfc` —
+  the shipped directory declares 55 containers (the nonzero
+  ones); the writer canonicalizes to 64 slots. The stream is
+  byte-identical. Preserving the shipped layout is a patch-0007
+  candidate. A1's byte-exact result was relative to an already
+  writer-produced baseline.
+- Regenerated pairs from pristine (A4 gates all pass; full
+  report `kfc4/regen-report.md`): new82 = 91,894 resources
+  (clone #82 is Crocodile @x3), new99 = 91,911. These supersede
+  the A4 pairs for the home load test.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
