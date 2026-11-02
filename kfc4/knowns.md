@@ -226,6 +226,19 @@ byte-verified on the real container · **INFERRED** = code reading ·
   (clone #82 is Crocodile @x3), new99 = 91,911. These supersede
   the A4 pairs for the home load test.
 
+## Load test result — the cliff is the game's own (Nov 2, 2026)
+
+- Eric loaded the canonical new82 pair at home: **crashed**.
+  Combined with the Oct 31 native-off run, every file-side and
+  native-side suspect is now eliminated: the writer's dialect
+  (this file was writer-canonical, fixed-point stable), the
+  native layer (off, still crashed), and clone content (single-
+  template and reversed-order runs from Oct 31). What remains
+  is a count consumer inside the game's own template handling.
+- Working configuration stands: **MAX_CLONES = 81**. The new99
+  test is moot. Reopening the question would require finding
+  the consumer in `enshrouded.exe` (Part B territory).
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
