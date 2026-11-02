@@ -239,6 +239,16 @@ byte-verified on the real container · **INFERRED** = code reading ·
   test is moot. Reopening the question would require finding
   the consumer in `enshrouded.exe` (Part B territory).
 
+## Confound — retest planned (Nov 2, 2026)
+
+- Eric flagged it: the new82 load test ran with his mod stack
+  live, and EML re-exports the `.kfc` on launch — the bytes the
+  game loaded were the installed writer's re-serialization, not
+  the staged pair. The crash above is therefore suggestive, not
+  decisive. Retest protocol: restore the clean pair, re-apply
+  the 82 set, rename `dinput8.dll` and `dbghelp.dll` off (no
+  loaders, no patch phase), launch, load a world.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
