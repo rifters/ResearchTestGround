@@ -67,6 +67,11 @@ stamped to that build unless a file says otherwise.
   restore the full 101,459-row dump; header is in part 1) and
   `data/containers.csv` — the contents dump and container table
   behind that census.
+- `kfc4/a4-clone-cliff-files.md` — the A4 file work: 82/99-clone
+  files regenerated with the proven writer; every old dialect
+  feature is gone, and test pairs are staged for the load test.
+- `kfc4/a4-test-protocol.md` — the home load-test protocol for
+  those pairs (82 first, then 99, native-off discriminator).
 - `tools/kfc4-audit/` — the Rust audit harness (upstream + fork builds)
   used to produce the audit numbers.
 - `tools/kfc4-writer-fixes/` — the three patches against upstream

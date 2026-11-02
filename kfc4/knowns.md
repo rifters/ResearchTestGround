@@ -178,6 +178,26 @@ byte-verified on the real container · **INFERRED** = code reading ·
   directory therefore predicts every `.dat` file's length exactly,
   and `data/contents.csv` is the slicing table for a capture.
 
+## Reference-pair correction + clone-cliff files (A4, Nov 1, 2026 — PROVEN)
+
+- The reference pair used by every phase is Eric's live game file
+  as pulled Oct 31, 2026 — **not** a clone-free container: it
+  carries the capped spawn_variants output (81 clones, 27 bases ×
+  3 presets) inside its 91,901 resources. All phase results are
+  relative to that snapshot and remain exact; "pristine" in the
+  reports means this pair.
+- The crash-era uploaded pair is the *single-template* test
+  population (99 copies of template `642098d4…` on one GUID stem),
+  not the 33-base production set; the 81 file is its first-81
+  subset.
+- With the five writer fixes, regenerated 82- and 99-clone files
+  show **zero** dialect features (key order 0 diffs, no entry
+  diffs, contents identical, no spurious chunk, pure-append
+  stream) and are fixed points of the in-place writer. One
+  residual: when resources are *added*, the bundle map's own key
+  order is rebuilt deterministically rather than preserved
+  (32/146 positions; all values correct) — a patch-0006 candidate.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
