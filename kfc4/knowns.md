@@ -156,6 +156,28 @@ byte-verified on the real container · **INFERRED** = code reading ·
   model is closed on this build; the only uncaptured part of a full
   game directory is the `.dat` payload set (PC-side).
 
+## Contents addressing (census, Nov 1, 2026 — PROVEN from the directory)
+
+- A content's payload length is stored in its key:
+  `ContentHash { size: u32, hash: [u32; 3] }`; the entry is
+  `{ offset: u32, flags: u16, container_index: u16 }`. All 101,459
+  offsets are multiples of 4,096, and payloads tile each container
+  back-to-back: `next_offset == align4096(offset + size)` for
+  101,402 of 101,404 consecutive pairs, zero overlaps. (One
+  irregularity: the map's single size-0 entry shares its offset in
+  container 53 with an 8,192-byte entry.) All flags are 0.
+- **The content hash is identified**: the size-0 entry's key equals
+  `ContentHash::from_data(&[])` through kfc-base's AES
+  `compute_content_guid` — that construction is the game's content
+  hash (proven on the empty payload; general verification becomes
+  mechanical once payloads are captured).
+- **`ContainerInfo.size` is resolved** (supersedes the A2.5 note):
+  it is the `.dat` file's length — Σ `align4096(size)` over the
+  container's payloads, exact for 55/55 nonempty containers
+  (Σ 51,500,314,624 B; raw payloads Σ 51,283,306,666 B). The
+  directory therefore predicts every `.dat` file's length exactly,
+  and `data/contents.csv` is the slicing table for a capture.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to

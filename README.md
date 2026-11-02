@@ -58,6 +58,13 @@ stamped to that build unless a file says otherwise.
   container rebuilt from the extraction folder alone, bit-identical
   to the game's files.
 - `tools/kfc4-pack-standalone/` — the standalone packer.
+- `kfc4/contents-addressing-map.md` — the contents addressing census:
+  all 101,459 entries mapped; payloads tile their containers
+  back-to-back at 4,096 alignment; the content hash construction is
+  identified; `ContainerInfo.size` is resolved (the padded `.dat`
+  file length, predicted exactly for all 55 files).
+- `data/contents.csv`, `data/containers.csv` — the full contents
+  dump and the container table behind that census.
 - `tools/kfc4-audit/` — the Rust audit harness (upstream + fork builds)
   used to produce the audit numbers.
 - `tools/kfc4-writer-fixes/` — the three patches against upstream

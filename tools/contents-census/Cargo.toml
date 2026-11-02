@@ -1,0 +1,10 @@
+[package]
+name = "kfc4-contents-map-harness"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kfc-base = { path = "/home/hatch/workspace/your_files/kfc4-inplace/src/crates/kfc-base" }
+
+[profile.release]
+debug = false
