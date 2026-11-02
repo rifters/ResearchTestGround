@@ -65,6 +65,25 @@ byte-verified on the real container · **INFERRED** = code reading ·
   first occurrence, offsets, registry order, names, or hashes) —
   preservation, not derivation, is the sound strategy.
 
+## Resource identity (A2, Nov 1, 2026 — all PROVEN)
+
+- The 91,901 ResourceIds cover only **74,542 distinct GUIDs**: a GUID is
+  a logical *group* (scene/world/atlas) spanning multiple types;
+  `part_index` enumerates repeated same-type constituents (299 repeating
+  (GUID, type) pairs, parts exactly 0..n−1 in 298 of them).
+- The main world GUID `509feadb…` owns 8,109 ResourceIds across 15
+  types — 1,601 chunks × the per-chunk types, part = chunk index. Its
+  VoxelTemperatureResource part 3 is the 44,659,852-byte resource behind
+  the 24-bit size recovery.
+- Type-name resolution is exact: FNV-1a-32(qualified name) == type_hash
+  for all 146 resource types.
+- One anomaly is the game's own data: GUID `4ae2414d…`'s
+  RenderTextureResource parts run 1..9 with no part 0
+  (fingerprint-verified, not extraction loss).
+- The resource-types CSV export is mostly sound (names 146/146, counts
+  agree 143/146) but its `FirstSampleGUID` column is wrong for 40/146
+  rows — don't join on it.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to

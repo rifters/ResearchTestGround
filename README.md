@@ -32,10 +32,14 @@ stamped to that build unless a file says otherwise.
 - `kfc4/a1-byte-faithful-writer.md` — the A1 report: three writer fixes
   make the zero-change round-trip **byte-identical** (0 differing bytes,
   SHA-256 verified).
+- `kfc4/a2-full-unpack.md` — the A2 report: the whole container unpacked
+  to a folder tree, verified fingerprint-for-fingerprint against A0.
 - `tools/kfc4-audit/` — the Rust audit harness (upstream + fork builds)
   used to produce the audit numbers.
 - `tools/kfc4-writer-fixes/` — the three patches against upstream
   v0.2.0, in apply order.
+- `tools/kfc4-extract/` — the A2 extraction tool (container → folder
+  tree + manifest).
 - `tools/split_kfc.py` — splits a large game file into 50 MB parts for
   transfer, with progress output.
 
