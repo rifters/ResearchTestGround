@@ -285,6 +285,28 @@ byte-verified on the real container · **INFERRED** = code reading ·
   starts with `m182_spawn_variants` out (the only
   clone-count-dependent mod), then `zz_m182_item_stats`.
 
+## Patch-pass diff — no content difference at 82 (Nov 2, 2026)
+
+- Local five-fix `emm` passes (full mod set, capped-81 variants)
+  over staged-81 and staged-82 files, plus a same-input control
+  run: identical patch counts (4,429); EXPORT82 vs EXPORT81
+  content differs only by the Crocodile clone itself
+  (byte-identical pass-through). Remaining diffs are proven
+  noise: 27 `*_Factory` templates flip ±1/−7 bytes between any
+  two runs; QSR notifier GUIDs are random per run. Full report:
+  `patchpass-diff` work (VM-side).
+- The +5 creates are solved: Auto Loot Plus's fixed-GUID smash
+  ImpactProgram + aura template (`a5c0de5a…a5000/a5002`), and
+  Quick Stack Range's 3 random-GUID NotifierResource copies —
+  identical over the 81 file and in the in-game export.
+- The Benchmark template (`7d243d9e…`, 96 B) is byte-identical
+  in pristine, staged, and both exports. No pass touches it.
+- Conclusion: the trigger is consumption-side — the live
+  process dies on a **relocated re-export** at 82 templates,
+  not on patch content. Candidate fix under test: enable the
+  in-place writer mode (patch 0004) in the fork EML's runtime
+  export path, keeping the post-patch layout as staged.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
