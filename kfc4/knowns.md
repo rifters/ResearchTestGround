@@ -249,6 +249,24 @@ byte-verified on the real container · **INFERRED** = code reading ·
   the 82 set, rename `dinput8.dll` and `dbghelp.dll` off (no
   loaders, no patch phase), launch, load a world.
 
+## Clean retest — the file is innocent (Nov 2, 2026)
+
+- Eric re-ran with **no mods at all** (dinput8.dll and
+  dbghelp.dll renamed off): the staged new82 pair **loaded with
+  no crashes**. The game accepts 82 clones in a canonical file.
+  The cliff therefore lives in the live-stack path, not the
+  file and not a game count limit.
+- Reassessment of the Oct 31 native-off datapoint: all-false
+  `m182_native.json` still had dbghelp.dll loaded and the EML
+  patch phase running over the file — the EML/native presence
+  was never actually removed in any crashing run until now.
+- Prime suspects: the patched EML's patch/export phase over a
+  file already containing the clones (create-call collisions,
+  enlarged-container export), or an EML mod walking the clone
+  templates. Next rung: dbghelp restored alone (dinput8 stays
+  off) — crash convicts the EML side; a clean load points at
+  the MLP/XHL/Greeneye chain or an interaction.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
