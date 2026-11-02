@@ -54,6 +54,10 @@ stamped to that build unless a file says otherwise.
   0005 (24-bit stored-size truncation): a same-size edit now changes
   exactly 2 bytes in the `.kfc`; ported to the fork as PR #6
   (stacked on PR #5).
+- `kfc4/standalone-pack.md` — the standalone pack report: the
+  container rebuilt from the extraction folder alone, bit-identical
+  to the game's files.
+- `tools/kfc4-pack-standalone/` — the standalone packer.
 - `tools/kfc4-audit/` — the Rust audit harness (upstream + fork builds)
   used to produce the audit numbers.
 - `tools/kfc4-writer-fixes/` — the three patches against upstream

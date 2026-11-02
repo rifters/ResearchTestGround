@@ -146,6 +146,16 @@ byte-verified on the real container · **INFERRED** = code reading ·
   chunk's frame. Overflow and new resources append at the reference
   stream's end.
 
+## Standalone rebuild (Nov 1, 2026 — PROVEN)
+
+- A folder-only rebuild is **byte-exact**: `kfc4-pack-standalone`,
+  fed only the A2.5 extraction folder, reproduces both game files
+  bit-for-bit (SHA-256 match), and an edited folder rebuilds with
+  diffs confined to the edited chunk's frame plus the two directory
+  fields that describe it. With A1–A2.5, the format's read/write
+  model is closed on this build; the only uncaptured part of a full
+  game directory is the `.dat` payload set (PC-side).
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
