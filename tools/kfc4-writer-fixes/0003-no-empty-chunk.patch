@@ -1,0 +1,18 @@
+diff --git a/crates/kfc-base/src/container/writer.rs b/crates/kfc-base/src/container/writer.rs
+index a2b04c4..6c0b95e 100644
+--- a/crates/kfc-base/src/container/writer.rs
++++ b/crates/kfc-base/src/container/writer.rs
+@@ -361,7 +361,12 @@ where
+     }
+ 
+     pub fn finalize(mut self) -> Result<(), KFCWriteError> {
+-        self.submit_resource_data()?;
++        // Only submit a trailing chunk when resource data is actually
++        // pending. Submitting unconditionally would append an empty chunk
++        // (and grow the resources stream) even for a zero-change write.
++        if !self.chunk_writer.get_ref().is_empty() {
++            self.submit_resource_data()?;
++        }
+ 
+         // prepare container infos
+ 

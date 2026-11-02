@@ -56,6 +56,14 @@ byte-verified on the real container · **INFERRED** = code reading ·
 - **PROVEN** — Tool-written files (81- and 99-clone outputs) parse
   cleanly and consistently; their differences from pristine are pure
   writer layout — a dialect, not corruption.
+- **PROVEN (A1, Nov 1, 2026)** — The three dialect behaviors above are
+  fixable: with the patch series in `tools/kfc4-writer-fixes/`
+  (IndexMap map order, bundle preservation, no empty chunk), a
+  zero-change round-trip of the pristine pair is **byte-identical**
+  (0 differing bytes, SHA-256 `7f6130bb…` / `1cd249c3…`). The bundle
+  segment order itself follows no derivable rule found (not map order,
+  first occurrence, offsets, registry order, names, or hashes) —
+  preservation, not derivation, is the sound strategy.
 
 ## Assumed / heuristic / unknown
 

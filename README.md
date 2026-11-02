@@ -27,8 +27,15 @@ stamped to that build unless a file says otherwise.
 - `kfc4/round-trip-audit.md` — the A0 audit (Nov 1, 2026): full parse of a
   pristine build-1273043 container, zero-change round-trip, verdict
   *compatible but lossy*.
+- `kfc4/KFC4-SPEC.md` — the A1 format spec: every field evidence-tagged
+  with the build-1273043 worked example.
+- `kfc4/a1-byte-faithful-writer.md` — the A1 report: three writer fixes
+  make the zero-change round-trip **byte-identical** (0 differing bytes,
+  SHA-256 verified).
 - `tools/kfc4-audit/` — the Rust audit harness (upstream + fork builds)
   used to produce the audit numbers.
+- `tools/kfc4-writer-fixes/` — the three patches against upstream
+  v0.2.0, in apply order.
 - `tools/split_kfc.py` — splits a large game file into 50 MB parts for
   transfer, with progress output.
 
