@@ -200,13 +200,13 @@ byte-verified on the real container · **INFERRED** = code reading ·
 
 ## Clone-cliff attribution — CORRECTED (Nov 1, 2026, per Eric)
 
-- Eric reports the native-layer question was settled by the
-  Oct 31 runs: **the clone cliff is the native layer's fault**,
-  not a game-side count limit and not the file. The all-false
-  discriminator is not an open test. The 81-clone cap is a
-  workaround for a native-layer limit (the variant catalog path
-  is the standing suspect); the fix hunt belongs in the fork's
-  native spawner/probe code.
+- The discriminator **was run** on Oct 31: stock 99 clones with
+  `m182_native.json` all false **still crashed** — the native
+  layer is **cleared**. (An earlier version of this section said
+  the opposite; it misread Eric's report.) The files in that run
+  were old-writer dialect, so the remaining suspects are the
+  dialect itself and a game-side count consumer; the staged
+  canonical 82/99 pairs are the decisive test.
 
 ## Assumed / heuristic / unknown
 

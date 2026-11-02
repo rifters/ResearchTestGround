@@ -1,12 +1,13 @@
 # CORRECTION — Nov 1, 2026, per Eric
 
-Eric reports the native-layer question is already settled from the
-Oct 31 runs: **the clone cliff is the native layer's fault.** The
-all-false discriminator below is therefore NOT an open test — do
-not re-run it as one. The staged pairs still answer the file-form
-question, but a crash at 82+ is now the expected outcome while the
-native spawner/probe catalog path is unpatched; the fix hunt moves
-to the fork's native code (the variant catalog loading path).
+Eric confirms the discriminator WAS run on Oct 31: stock 99
+clones with `m182_native.json` **all false still crashed** — the
+native layer is CLEARED. (An earlier version of this header said
+the opposite; it misread him.) The files in that run were written
+by the old dialect writer, so the staged pairs below are the
+decisive remaining test: canonical files at 82+ load => the
+dialect was the cause; still crash => a game-side count limit is
+real and the 81 cap is final.
 
 ---
 
