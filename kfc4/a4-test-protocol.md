@@ -1,3 +1,15 @@
+# CORRECTION — Nov 1, 2026, per Eric
+
+Eric reports the native-layer question is already settled from the
+Oct 31 runs: **the clone cliff is the native layer's fault.** The
+all-false discriminator below is therefore NOT an open test — do
+not re-run it as one. The staged pairs still answer the file-form
+question, but a crash at 82+ is now the expected outcome while the
+native spawner/probe catalog path is unpatched; the fix hunt moves
+to the fork's native code (the variant catalog loading path).
+
+---
+
 # Home load test — proven-writer clone files at the 82 / 99 boundary
 
 Game build 1273043 · Files staged Nov 1, 2026 (VM side of A4)

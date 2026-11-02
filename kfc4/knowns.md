@@ -198,6 +198,16 @@ byte-verified on the real container · **INFERRED** = code reading ·
   order is rebuilt deterministically rather than preserved
   (32/146 positions; all values correct) — a patch-0006 candidate.
 
+## Clone-cliff attribution — CORRECTED (Nov 1, 2026, per Eric)
+
+- Eric reports the native-layer question was settled by the
+  Oct 31 runs: **the clone cliff is the native layer's fault**,
+  not a game-side count limit and not the file. The all-false
+  discriminator is not an open test. The 81-clone cap is a
+  workaround for a native-layer limit (the variant catalog path
+  is the standing suspect); the fix hunt belongs in the fork's
+  native spawner/probe code.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
