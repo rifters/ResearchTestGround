@@ -34,6 +34,11 @@ stamped to that build unless a file says otherwise.
   SHA-256 verified).
 - `kfc4/a2-full-unpack.md` — the A2 report: the whole container unpacked
   to a folder tree, verified fingerprint-for-fingerprint against A0.
+- `kfc4/a1-port-to-m182-fork.md` — the three writer fixes ported to the
+  M182 fork EML: byte-identical round-trip there too, magic
+  preservation intact.
+- `tools/kfc4-writer-fixes-fork/` — the fork versions of the patches,
+  in apply order.
 - `tools/kfc4-audit/` — the Rust audit harness (upstream + fork builds)
   used to produce the audit numbers.
 - `tools/kfc4-writer-fixes/` — the three patches against upstream
