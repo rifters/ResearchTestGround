@@ -63,8 +63,10 @@ stamped to that build unless a file says otherwise.
   back-to-back at 4,096 alignment; the content hash construction is
   identified; `ContainerInfo.size` is resolved (the padded `.dat`
   file length, predicted exactly for all 55 files).
-- `data/contents.csv`, `data/containers.csv` — the full contents
-  dump and the container table behind that census.
+- `data/contents-1.csv` + `data/contents-2.csv` (concatenate to
+  restore the full 101,459-row dump; header is in part 1) and
+  `data/containers.csv` — the contents dump and container table
+  behind that census.
 - `tools/kfc4-audit/` — the Rust audit harness (upstream + fork builds)
   used to produce the audit numbers.
 - `tools/kfc4-writer-fixes/` — the three patches against upstream
