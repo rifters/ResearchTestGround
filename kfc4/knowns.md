@@ -307,6 +307,25 @@ byte-verified on the real container · **INFERRED** = code reading ·
   in-place writer mode (patch 0004) in the fork EML's runtime
   export path, keeping the post-patch layout as staged.
 
+## In-place runtime failure + fallback fix (Nov 2, 2026)
+
+- PR #8 wired `in_place: true` into the runtime's `create_writer`.
+  In-game: pass 1 exported in-place successfully, but EML's
+  second pass builds its reference from the `.bak` (pre-patch
+  directory) while the stream on disk is pass 1's export.
+  `InPlaceData::load`'s strict snapshot dies with
+  `IO error: incomplete frame`; AppState fails; EML restores
+  only the `.kfc`, leaving a two-generation pair (game:
+  "Could not find core resource package").
+- Reproduced locally by forcing a second CLI pass over an
+  in-place export through the backup-reference path; a
+  consistent in-place export pair itself decodes cleanly
+  (59/59 chunks) — the exports are well-formed; the snapshot
+  just requires directory/stream generation match.
+- Fix (PR #9): a failed snapshot degrades that run to the
+  incremental writer instead of failing writer creation.
+  Verified: kfc-base tests 25/25; forced second pass succeeds.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
