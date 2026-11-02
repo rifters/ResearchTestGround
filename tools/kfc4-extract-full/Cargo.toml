@@ -1,0 +1,13 @@
+[package]
+name = "kfc4-extract-full"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kfc-base = { path = "/home/hatch/workspace/your_files/kfc4-a1/src/crates/kfc-base" }
+serde_json = "1"
+zstd = "=0.13.3"
+sha2 = "0.10"
+
+[profile.release]
+debug = false

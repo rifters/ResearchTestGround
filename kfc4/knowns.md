@@ -111,6 +111,25 @@ byte-verified on the real container · **INFERRED** = code reading ·
   indices, chunk table, contents map, orphan dump) plus the `.dat`
   files — the "A2.5" extraction defined in the A3 report.
 
+## Full-fidelity extraction (A2.5, Nov 1, 2026 — all PROVEN)
+
+- The `.kfc` byte budget closes exactly: 9 verbatim directory
+  sections (9,394,437 B) + 11 zero alignment bytes (7 after version,
+  4 after resource_locations) = header size 9,394,448; the file's
+  1,776-byte tail padding is all zero.
+- The stream byte budget closes exactly: 483,669,781 resource bytes
+  + 16,989,572 orphan + 497,031 zero padding = 501,156,384.
+- Final chunk-level pattern: 58 chunks reproduce only at zstd level
+  9; chunks 59, 63, 65 reproduce at {1, 3, 9} (recorded as 1);
+  chunks 58, 60, 61, 62, 64 reproduce only at level 3. 66/66 frames
+  are reproducible by re-encoding.
+- **Correction to the A0 audit report:** the `.dat` total of
+  74,410,422 B does not follow from `ContainerInfo.size` — those
+  fields sum to 51,500,314,624, so `size` is not a payload byte
+  count (semantics unknown). The `count` fields do sum exactly to
+  the 101,459 contents entries: the containers partition the
+  contents set.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to

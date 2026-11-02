@@ -45,6 +45,11 @@ stamped to that build unless a file says otherwise.
   measured (≈25 MB of closing records defined as "A2.5").
 - `tools/kfc4-pack/` — the A3 repack tool (folder → container, with
   fail-closed pre-flight verification).
+- `kfc4/a2-5-full-fidelity-extraction.md` — the A2.5 report: the
+  extraction now captures the complete directory side verbatim; both
+  game files' byte budgets close exactly. Remaining gap: `.dat`
+  payloads (PC-side).
+- `tools/kfc4-extract-full/` — the A2.5 extractor.
 - `tools/kfc4-audit/` — the Rust audit harness (upstream + fork builds)
   used to produce the audit numbers.
 - `tools/kfc4-writer-fixes/` — the three patches against upstream
