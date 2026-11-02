@@ -84,6 +84,33 @@ byte-verified on the real container · **INFERRED** = code reading ·
   agree 143/146) but its `FirstSampleGUID` column is wrong for 40/146
   rows — don't join on it.
 
+## Writer mechanics and stream facts (A3, Nov 1, 2026 — all PROVEN)
+
+- The incremental writer is **append-only**: every written resource is
+  relocated into chunks appended after the reference stream. A full
+  repack from the A2 folder reproduces all content (91,901/91,901
+  fingerprints) and the entire directory except resource offsets —
+  but is not byte-identical. Byte-identity needs an in-place writer
+  mode (write into the resource's own chunks when sizes fit).
+- The game **truncates stored resource sizes to 24 bits** on write;
+  kfc-base writes the full u32. Exactly one resource in this container
+  is affected (the 44,659,852-byte world temperature resource).
+- Game zstd frames are reproducible with the stock encoder, but not
+  at one level: **level 9 reproduces 61/66 chunks byte-for-byte**;
+  the final five (58, 60, 61, 62, 64) reproduce exactly at **level 3**
+  (smaller window). Per-chunk level must be recorded at extraction.
+- The uncompressed stream contains **orphan data**: 3,960 large gaps
+  (16,989,572 B total) referenced by no directory entry, all
+  data-bearing; the two largest are not near-duplicates of each
+  other, so they aren't simply superseded copies. Nature
+  undetermined — a full-fidelity extraction must dump them verbatim
+  with offsets. (The 64,139 small gaps ≤15 B are 100% zero —
+  alignment padding, reproducible by rule.)
+- A folder-only byte-exact rebuild needs ≈25 MB of additional
+  records beyond the payload half (containers block, key sequence,
+  indices, chunk table, contents map, orphan dump) plus the `.dat`
+  files — the "A2.5" extraction defined in the A3 report.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to

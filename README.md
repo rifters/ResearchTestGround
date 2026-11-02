@@ -39,6 +39,12 @@ stamped to that build unless a file says otherwise.
   preservation intact.
 - `tools/kfc4-writer-fixes-fork/` — the fork versions of the patches,
   in apply order.
+- `kfc4/a3-repack.md` — the A3 report: the folder is a proven-complete
+  payload representation; byte-identical repack is blocked by the
+  writer's append-only mechanics, and the folder-only rebuild gaps are
+  measured (≈25 MB of closing records defined as "A2.5").
+- `tools/kfc4-pack/` — the A3 repack tool (folder → container, with
+  fail-closed pre-flight verification).
 - `tools/kfc4-audit/` — the Rust audit harness (upstream + fork builds)
   used to produce the audit numbers.
 - `tools/kfc4-writer-fixes/` — the three patches against upstream

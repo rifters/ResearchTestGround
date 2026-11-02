@@ -1,0 +1,12 @@
+[package]
+name = "kfc4-pack"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kfc-base = { path = "/home/hatch/workspace/your_files/kfc4-a1/src/crates/kfc-base" }
+serde_json = "1"
+zstd = "=0.13.3"
+
+[profile.release]
+debug = false
