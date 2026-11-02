@@ -267,6 +267,24 @@ byte-verified on the real container · **INFERRED** = code reading ·
   off) — crash convicts the EML side; a clean load points at
   the MLP/XHL/Greeneye chain or an interaction.
 
+## Empty-mods rung — trigger is a mod's patch output (Nov 2, 2026)
+
+- dbghelp live, mods folder empty, staged new82 pair: EML log
+  shows "Applied 0 patches" and the game **loaded fully**. The
+  post-run `.kfc` hashes byte-identical to the staged file —
+  the new writer's zero-patch export is a true fixed point.
+  The native layer was live and active the whole session.
+  Runtime, native layer, and writer are all cleared.
+- The Benchmark error is **benign**: it appears in the
+  successful log too (`[ecsc]` pass; the game continues and
+  initializes 12,349 template infos = stock + 82 clones). The
+  fatal element in modded runs is the `[X]` allocator assert
+  following it in the server pass.
+- Remaining suspect space: the EML mods' patch output
+  (4,433 patches) interacting with the 82nd clone. Bisect
+  starts with `m182_spawn_variants` out (the only
+  clone-count-dependent mod), then `zz_m182_item_stats`.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
