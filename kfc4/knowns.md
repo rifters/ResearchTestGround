@@ -326,6 +326,108 @@ byte-verified on the real container · **INFERRED** = code reading ·
   incremental writer instead of failing writer creation.
   Verified: kfc-base tests 25/25; forced second pass succeeds.
 
+## Pass-2 panics — base reads pair the wrong stream (Nov 2, 2026 — PROVEN)
+
+- The 99 launch on the PR #8 build: pass 1 clean (99 created,
+  4,532 patches), pass 2 died mid-run with the cannot-unwind
+  abort — first reported on bufftweaks, later on Auto Loot Plus.
+  Mechanism, reproduced in the CLI: the loader's "original file"
+  view pairs the `.bak` DIRECTORY with the LIVE stream. That was
+  safe only while exports were append-only (original bytes never
+  move — the fork's own guard.rs doc states this assumption).
+  In-place exports rewrite slots, so backup-directed reads return
+  rewritten bytes; the first mod to read unwrapped dies.
+- PR #10 (pair backup): `create_backup` also copies the stream to
+  `.kfc_resources.bak`; restores restore both halves.
+- PR #11 (pair reader): `create_reader` sets
+  `resource_extension: "kfc_resources.bak"` so the backup
+  directory reads the backup stream. Verified locally: the forced
+  second pass that exited 1 with the incomplete-frame cascade now
+  exits 0, zero frame errors.
+- First 99 launch on the #11 build: both passes clean, no panic.
+
+## Template arithmetic — a ceiling that fit every point (Nov 2, 2026 — counts PROVEN, interpretation SUPERSEDED below)
+
+- Pristine file: 12,267 TemplateResources. Eric's daily-driver
+  baseline: exactly 12,349 (81 clones + the Auto Loot Plus aura
+  template). Every crashing in-process launch was ≥12,350
+  template infos; every loading one ≤12,349. The byte-budget
+  variant was killed (bare-82 vs modded-82 differ by the aura's
+  736 bytes but exactly 1 in count). Reading at the time: a
+  game-side registration ceiling at 12,349 — see the cold test
+  below, which kills this interpretation.
+
+## Re-patch corruption — the backup is the eternal base (Nov 2, 2026 — PROVEN)
+
+- Loader model (code-verified in app_state.rs/lib.rs): the
+  working registry and all "original" reads come from the `.bak`
+  pair; the live file is a derived artifact; baked resources
+  persist across launches only because unchanged sets skip
+  patching (files.json cache). Any set change re-patches from the
+  backup.
+- Failure: bake (in-place export), remove a mod, restart → the
+  re-patch wrote the backup generation's directory over the baked
+  generation's stream. Game log at 2s: `[resource] Could not load
+  resource bundle #0. error:eof reached` → Steam_CoreResourcePackageNotFound.
+- PR #12 (restore-before-patch): in AppState::new, when a patch
+  pass will run and the live `.kfc` differs from the backup,
+  restore the pair first. A/B verified in the CLI on the exact
+  sequence: the pre-fix pair is unparseable on read-back (chunk
+  EOFs; version field reads as garbage 0x6d783f9b); the fixed
+  build's pair audits clean — 91,817 resources, 0 size mismatches.
+
+## Bake-and-remove cannot test baked files (Nov 2, 2026 — PROVEN by measurement)
+
+- Eric's sequence on the #12 build (bake 99, exit, remove mod,
+  restart) loaded the world — but the pulled live `.kfc` measures
+  91,817 resources, 12,268 TemplateResources, and 0 of the 99
+  clone GUIDs: the restart's restore+re-patch (PR #12 working as
+  designed) had rebuilt the file without the clones. Baked-file
+  tests require a staged pair with the loaders out of the process.
+- Tooling note: TemplateResource in ResourceId terms is
+  type_hash 964069237; the A0 fingerprint files' type column
+  (39768775) is a different representation.
+
+## COLD TEST — there is no file-side ceiling (Nov 2, 2026 — PROVEN)
+
+- Staged pristine+99 pair placed, BOTH loaders renamed off, cold
+  launch: game log shows `[ecss] Initialized 12,366 template
+  infos` and the same for [ecsc], zero fatal lines, session
+  established, world played. The identical file content crashes
+  when a patch pass runs in the same process.
+- Verdict: the "ceiling" is a process-state interaction, not a
+  count limit. Eric's runtime-strain theory is the standing
+  model: EML's patch chain (Lua execution + export, ~4,500
+  patches) leaves the process in a state where the [ecss]
+  template array's allocator is never set at high counts —
+  consistent with the assert text ('No allocator set') and with
+  the exhausted static hunt (no 12,349 constant exists in the
+  exe). Every crash on record is a patch-pass launch; the daily
+  12,349 file loads on skip launches; an empty-mods patch pass at
+  12,349 loaded.
+- Practical: the 99 clones are playable today via bake-once-
+  then-skip (the bake launch still crashes at world load; the
+  next, unchanged launch skips patching and loads).
+- Candidate proper fix (design only): run the patch phase out of
+  process — a thin proxy that spawns the standalone patcher and
+  waits. In-process, the loader DLL never exits, and freed
+  patch-phase heap remains as fragmentation.
+- Open: the true cold file limit above 12,366 (untested); what
+  exactly the patch pass leaves behind (Ghidra trace of template
+  registration + allocator assignment, running); whether the
+  dedicated server binary (fewer passes, 16-player headroom)
+  tolerates the same chain — Eric's hypothesis, untested.
+
+## .dat payloads — first container verified (Nov 2, 2026 — PROVEN)
+
+- `enshrouded_054.dat` pulled from the game folder: 29,224,960
+  bytes, exactly the census-predicted length. All 1,209 payloads
+  slice at their recorded offsets and `ContentHash::from_data`
+  reproduces every directory key; 0 out-of-bounds, 0 unaligned.
+  Payloads are raw slices addressed by the contents map; no
+  per-container transform. Remaining containers unverified
+  (51.5 GB total; pull per purpose).
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
@@ -337,9 +439,10 @@ byte-verified on the real container · **INFERRED** = code reading ·
 - **ASSUMED** — The game's own chunking policy (~8 MiB uncompressed
   chunks) is observed, not specified; the tooling's writer matches it
   on this build.
-- **UNTESTED** — `.dat` content *payloads*: directory entries (101,459)
-  verified; payload data not yet tested (payloads weren't available
-  off-PC).
+- **PARTLY PROVEN** — `.dat` content *payloads*: container 54 fully
+  verified against the directory (1,209/1,209 hash matches, see the
+  .dat section above); the other 54 non-empty containers are
+  unverified.
 - **NOTE** — Upstream 0.2 now *rejects* KFC3 files outright
   (`InvalidMagic`); the fork accepts both magics and preserves the
   existing file's magic on write.
