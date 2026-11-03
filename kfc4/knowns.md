@@ -428,6 +428,40 @@ byte-verified on the real container · **INFERRED** = code reading ·
   per-container transform. Remaining containers unverified
   (51.5 GB total; pull per purpose).
 
+## Ghidra trace — registration mapped, template array exonerated (Nov 2, 2026 — PROVEN from the binary)
+
+- Full report: `kfc4-partb/GHIDRA-TRACE.md` in the project files
+  (Ghidra DB built from the exe's `.pdata` — 72,747 functions —
+  after full auto-analysis OOM-failed 4× on a 7 GB VM).
+- Registration driver `0x1409c0210` iterates the template
+  records and calls register-one-template `0x1409bf800` (FUN_A),
+  then logs 'Initialized %,u template infos'. Correction to an
+  earlier note: the ECS log strings DO have direct `lea` xrefs at
+  their true start addresses — the original probe had hit
+  mid-string fragment offsets.
+- The TemplateInfo slice (`world+0x280`) grows through a change
+  function at `world+0x298` whose null-guard asserts a DIFFERENT
+  message ('Cannot increase slice capacity… no change function
+  registered!'). The template array is therefore NOT the firing
+  container.
+- The crash assert's exact condition (from the decompiled
+  setSize utility family): a GROW request (newSize > capacity)
+  against a BaseDynamicArray whose +0x20 tagged-allocator field
+  is 0. Shrink/reset calls can never reach it. Container layout:
+  +0x00 data, +0x08 count, +0x10 capacity, +0x18 changeFn,
+  +0x20 tagged allocator.
+- FUN_A's own builder containers are provably safe (allocator
+  field set unconditionally per call from a TLS context object).
+  The firing grow is most likely a NEIGHBOURING container in the
+  same ~1 ms window after the benign Benchmark miss — which is
+  why the crash tracks template count and patch-chain presence
+  rather than the file.
+- Decisive next step (one run): x64dbg conditional breakpoint at
+  the shared assert reporter `0x14002f590` with
+  `rdx == 0x1413b55b0` under the crashing configuration; the
+  return address names the firing instantiation. Full 7-BP plan
+  in the report §6.
+
 ## Assumed / heuristic / unknown
 
 - **INFERRED (heuristic)** — Resource sizes are stored truncated to
